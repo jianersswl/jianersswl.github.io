@@ -9,7 +9,7 @@
 		<title>Generic - Editorial by HTML5 UP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/generic.css" />
 	</head>
 	<body class="is-preload">
 
@@ -35,33 +35,103 @@
 							<!-- Content -->
 								<section>
 									<header class="main">
-										<h1>Generic</h1>
+										<h1>Web服务器部署: Django + uWSGI + Nginx </h1>
 									</header>
 
 									<span class="image main"><img src="images/pic11.jpg" alt="" /></span>
+									<p>想要外网访问自己搭建的网站，首先需要一个服务器。这里使用的是阿里云服务器，搭配Django + uWSGI + Nginx三件套。</p>
 
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
+									<hr class="major" />
+
+									<h2>Python环境</h2>
+									<p>本来想使用Anaconda来管理Python环境，但在安装uWSGI的时候卡住了。
+									   一开始以为是镜像源的问题，但是换了清华、北大、阿里的各种源发现都还是不行就放弃了，改用virtualenv。
+									</p>
+									<p>virtualenv只能基于系统安装的python版本来创建虚拟环境，所以要先安装好想要的python版本再创建虚拟环境。
+										这次使用的阿里云自带的python3.6，并使用virtualwrapper来管理不同的虚拟环境。
+									</p>
+									<pre>
+<code>
+python3 -m pip install --upgrade pip
+
+pip install virtualenv
+pip3 install virtualenvwrapper
+
+# 创建目录用来存放虚拟环境
+mkdir ~/.virtualenvs
+
+# 在.bashrc中添加
+## 指定PYTHON 版本
+VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export WORKON_HOME=~/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+# 运行
+source ~/.bashrc
+</code>
+									</pre>
+									<p>
+										<ul>
+											<li>workon [虚拟环境名称]:切换虚拟环境</li>
+											<li>lsvirtualenv:列出已有的虚拟环境列表</li>
+											<li>mkvirtualenv :新建虚拟环境</li>
+											<li>rmvirtualenv :删除虚拟环境</li>
+											<li>deactivate: 离开已进入的虚拟环境</li>
+										</ul>
+									</p>
+
+									<hr class="major" />
+
+									<h2>Django</h2>
 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
 									<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
 
 									<hr class="major" />
 
-									<h2>Interdum sed dapibus</h2>
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
-
-									<hr class="major" />
-
-									<h2>Magna etiam veroeros</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
-									<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
-
-									<hr class="major" />
-
-									<h2>Lorem aliquam bibendum</h2>
+									<h2>uWSGI</h2>
 									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
 
+									<hr class="major" />
+
+									<h2>Nginx</h2>
+									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
+
+									<hr class="major" />
+
+									<h2>服务器安全组配置</h2>
+									<p>阿里云默认开放的端口只有1、22、3389，所以需要手动开放80端口。开放服务器端口分为两步：</p>
+									<b>
+										<ol>
+											<li>在控制台手动添加安全组
+												<a href="https://developer.aliyun.com/article/767026">（点击查看教程）</a>
+											</li>
+											<li>服务器防火墙开放相应端口</li>
+										</ol>
+									</b>
+									<p>
+										linux使用的防火墙一般有三种：ufw、firewalld、iptables， 如果同时安装会相互影响
+										<a href="https://blog.csdn.net/qq_37373209/article/details/121513113">（点击查看详细说明）。</a>
+										<br>
+										<b><em>需要注意的是，当系统存在多个防火墙时，要保证每个防火墙对应的端口号都要开放，此端口才能被访问。所以最好不要在系统里安装多个防火墙，避免混乱。</em></b>
+									</p>
+									<p>本服务器使用的系统是Ubuntu 20.04，系统自带的防防火墙是ufw。</p>
+									<pre>
+<code>
+#查看防火墙状态以及开放的端口
+ufw status
+
+#打开、关闭防火墙
+ufw enable
+ufw disable
+
+#添加、删除端口
+ufw allow 端口号
+ufw deny 端口号
+</code>
+									</pre>
+									
 								</section>
 
 						</div>
