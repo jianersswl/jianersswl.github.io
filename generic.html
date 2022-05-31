@@ -131,6 +131,18 @@ ufw allow 端口号
 ufw deny 端口号
 </code>
 									</pre>
+
+									<h3>一些坑</h3>
+									<p>
+										<ul>
+											<li>
+												<em style="color:red"> connection refused by foreign host</em>
+												<ul>
+													<li>阿里云自助诊断发现ip被拦截了，ufw allow 22/tcp 重新放行</li>
+												</ul>
+											</li>
+										</ul>
+									</p>
 									
 								</section>
 
