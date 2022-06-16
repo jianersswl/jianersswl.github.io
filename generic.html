@@ -93,24 +93,36 @@ source ~/.bashrc
 									<hr class="major" />
 
 									<h2>uWSGI</h2>
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
-									<p>
-										<ul>
-											<li><a href="https://blog.csdn.net/weixin_42134789/article/details/115713572">uWSGI配置文件</a></li>
-										</ul>
-									</p>
+									<p>配置uWSGI最基本的几点就是：</p>
+									<ul>
+										<li>uwsgi.ini文件可以直接放在mysite文件夹里</li>
+										<li>配置log文件的路径（可选）：/var/log/uwsgi</li>
+										<li>配置project的路径</li>
+										<li>若配合nginx使用，且nginx部署在同一个服务器里，使用socket通信</li>
+									</ul>
+									<p>一些参考教程：</p>
+									<ul>
+										<li><a href="https://blog.csdn.net/weixin_42134789/article/details/115713572">uWSGI配置文件</a></li>
+									</ul>
 
 									<hr class="major" />
 
 									<h2>Nginx</h2>
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
-									<p>
-										<ul>
-											<li><a href="https://www.php.cn/nginx/423622.html">Nginx 403</a></li>
-											<li><a href="https://www.jianshu.com/p/6c37abcf2e3d">Nginx 访问静态资源例子</a></li>
-											<li><a href="https://www.jianshu.com/p/8503a04dd2b2">Nginx 基本指令</a></li>
-										</ul>
-									</p>
+									<p>使用nginx的一些要点：</p>
+									<ul>
+										<li>nginx配置文件的路径（未测试其他路径）：/etc/nginx</li>
+										<li>启动：nginx</li>
+										<li>查看： netstat -anp | grep :80	或者 lsof -i:80</li>
+										<li>结束：killall nginx（粗暴）或者nginx -s quit（stop）</li>
+										<li>nginx配置socket通信，要通过一个socket文件，在配置文件里设置和uwsgi同一个socket文件路径即可</li>
+										<li>配置静态资源路径之间添加一个location</li>
+									</ul>
+									<p>一些参考教程：</p>
+									<ul>
+										<li><a href="https://www.php.cn/nginx/423622.html">Nginx 403</a></li>
+										<li><a href="https://www.jianshu.com/p/6c37abcf2e3d">Nginx 访问静态资源例子</a></li>
+										<li><a href="https://www.jianshu.com/p/8503a04dd2b2">Nginx 基本指令</a></li>
+									</ul>
 
 									<hr class="major" />
 
